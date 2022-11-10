@@ -107,6 +107,7 @@ These are the parameters to use when you run the discover.py script:
 | -cd         | Specify a delimiter other than the default |
 | -ch         | Include a column header in the first row. Set the value to `yes` or `no`. |
 | -cl         | Clean the download .zip files. By default, the files are deleted, but you can set this parameter to `no` to keep them. |
+| -sh         | Include a column header in the first row in SOH file. Set the value to `yes` or `no`. |
 
 **Note:** The start and end ranges are only used for the script's first run. After the first run, the download history is stored in the data/dsccnfg directory. To force the script to use the variables for start date and end date, delete or move the history information.
 
