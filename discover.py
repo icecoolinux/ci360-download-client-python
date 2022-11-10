@@ -32,6 +32,7 @@ limit     = "20"
 csvflag   = 'no'
 delimiter = '|'
 csvheader = 'yes'
+sohheader = 'yes'
 append    = 'no'
 sohDelimiter = "\x01"
 progressbar = 'no'
@@ -551,7 +552,11 @@ def downloadEntity( entity, schemaUrl, prefix ):
     elif csvflag == 'yes' and append == 'yes':
         createSingleTableFiles(entity, schemaUrl)
         appendCSV(unzippedFile, tablefile, sohDelimiter, delimiter)
-        
+    elif csvflag == 'no' and sohheader == 'yes':
+        with open(unzippedFile, 'r+') as f:
+            content = f.read()
+            f.seek(0, 0)
+            f.write(chr(1).join(header.split(delimiter)) + "\n" + content)
         
     #remove zipped file
     if cleanFiles == 'yes':
@@ -809,6 +814,8 @@ parser.add_argument('-cf', action='store', dest='csvflag', type=str,
     help='create csv: yes or no - default no', required=False)
 parser.add_argument('-ch', action='store', dest='csvheader', type=str, 
     help='csv column header row: yes or no - default yes', required=False)
+parser.add_argument('-sh', action='store', dest='sohheader', type=str, 
+    help='soh column header row: yes or no - default yes', required=False)
 parser.add_argument('-st', action='store', dest='start', type=str, 
     help='enter start time: ie. 2017-11-07T10', required=False)
 parser.add_argument('-et', action='store', dest='end', type=str, 
@@ -856,6 +863,9 @@ if args.csvflag is not None:
 if args.csvheader is not None:
     csvheader = str(args.csvheader)
     print('  csvheader: ' + csvheader)
+if args.sohheader is not None:
+    sohheader = str(args.sohheader)
+    print('  sohheader: ' + sohheader)
 if args.clean is not None:
     cleanFiles = str(args.clean)
     print('  cleanFiles: ' + cleanFiles)
